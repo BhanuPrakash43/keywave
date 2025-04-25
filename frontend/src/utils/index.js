@@ -1,4 +1,3 @@
-// check if code is running inside a browser environment
 export const isBrowser = typeof window !== "undefined";
 
 export const limitChar = (string, limit) => {
@@ -6,7 +5,6 @@ export const limitChar = (string, limit) => {
   return string.slice(0, limit) + "...";
 };
 
-// A utility function for handling API requests with info like loading, success, and error handlers.
 export const requestHandler = async (api, setLoading, onSuccess, onError) => {
   setLoading && setLoading(true);
 
@@ -18,19 +16,14 @@ export const requestHandler = async (api, setLoading, onSuccess, onError) => {
       onSuccess(data);
     }
   } catch (error) {
-    console.error("Error:", error); // Log the error
-    // if ([401, 403].includes(error?.response?.data?.statusCode)) {
-    // localStorage.clear();
-    // if (isBrowser) window.location.href = "/login";
+    console.error("Error:", error); 
     onError(error?.response?.data?.message || "Something went wrong");
   } finally {
     setLoading && setLoading(false);
   }
 };
 
-// class providing utility methods for localStorage
 export class LocalStorage {
-  // get a value from the localStorage
   static get(key) {
     if (!isBrowser) return;
     const value = localStorage.getItem(key);
@@ -64,7 +57,6 @@ export class LocalStorage {
   }
 }
 
-// a utility function to get the chat object metadata and filter's it and return
 export const getChatObjectMetadata = (chat, currentUser) => {
   const lastMessage = chat.lastMessage?.content
     ? chat.lastMessage?.content
@@ -75,9 +67,8 @@ export const getChatObjectMetadata = (chat, currentUser) => {
     : " No messages yet";
 
   if (chat.isGroupChat) {
-    // filter the metadata based on the group chat
     return {
-      avatar: "https://via.placeholder.com/100x100.png", // default avatar for group chat
+      avatar: "https://via.placeholder.com/100x100.png", 
       title: chat.name,
       description: `${chat.participants.length} members joined`,
       lastMessage: chat.lastMessage
@@ -85,12 +76,10 @@ export const getChatObjectMetadata = (chat, currentUser) => {
         : lastMessage,
     };
   } else {
-    // filter the metadata based on the one-to-one chat
     const participant = chat.participants?.find(
       (participant) => participant._id !== currentUser?._id
     );
 
-    // return the filtered metadata
     return {
       avatar: participant?.avatarUrl,
       title: participant?.username,
@@ -100,7 +89,6 @@ export const getChatObjectMetadata = (chat, currentUser) => {
   }
 };
 
-// Function to find the opponent participant (assuming you are user2)
 export const getOpponentParticipant = (participants, currentUserId) => {
   return participants?.find((participant) => participant._id !== currentUserId);
 };
