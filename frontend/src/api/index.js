@@ -1,8 +1,6 @@
 import axios from "axios";
 import { LocalStorage } from "../utils";
-// import FormData from "form-data";
 
-// Axios instance for API requests
 const apiClient = axios.create({
 	baseURL: import.meta.env.VITE_SERVER_URL,
 	withCredentials: true,
@@ -11,9 +9,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
 	(config) => {
-		// retrieve user token from localStorage
 		const token = LocalStorage.get("token");
-		// set authorization header with bearer
 		config.headers.Authorization = `Bearer ${token}`;
 		return config;
 	},
